@@ -1,6 +1,23 @@
 --
 --
 
+CREATE OR REPLACE FUNCTION "get_group_number"(param_phrase_id INT)
+RETURNS INT AS $$
+DECLARE root_id INT;
+BEGIN
+    SELECT base_phrase_id FROM phrase WHERE phrase_id = param_phrase_id INTO root_id;
+    WHILE root_id IS NOT NULL LOOP
+        param_phrase_id := root_id;
+        SELECT base_phrase_id FROM phrase WHERE phrase_id = param_phrase_id INTO root_id;
+    END LOOP;
+
+    RETURN param_phrase_id;
+END;
+$$ LANGUAGE plpgsql;
+
+--
+--
+
 CREATE OR REPLACE PROCEDURE "calculate_group_order"(param_book_id int) AS
 $$
 UPDATE book_phrase bp
