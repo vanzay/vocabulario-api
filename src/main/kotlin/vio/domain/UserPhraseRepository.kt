@@ -33,7 +33,6 @@ interface UserPhraseRepository : JpaRepository<UserPhrase, Int> {
         pageable: Pageable
     ): List<UserPhrase>
 
-    // TODO AND up.last_activity < date_sub(now(), interval 30 minute)
     @Query(
         """
         SELECT up
@@ -63,7 +62,6 @@ interface UserPhraseRepository : JpaRepository<UserPhrase, Int> {
     )
     fun getExportData(user: User, idList: List<Int>): List<UserPhrase>
 
-    // TODO test query with multiples languages
     @Query(
         """
         SELECT new vio.domain.results.LanguageEntry(

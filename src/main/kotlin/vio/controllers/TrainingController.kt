@@ -57,14 +57,13 @@ class TrainingController(
         val book = if (bookId == null) null else bookService.getBook(bookId, user)
         val language = book?.language ?: languageRepository.findByIso2(langIso2!!) ?: return emptyList()
 
-        // TODO is such sorting effective for user?
         val sort = Sort.by(
-            Sort.Order.asc("${mode}Points"),
+//            Sort.Order.asc("${mode}Points"),
             Sort.Order.asc("lastActivity")
         )
         val pageRequest = PageRequest.of(0, phrasesPerLesson, sort)
         val userPhrases = userPhraseRepository.getPhrasesForTraining(user, book, language, pageRequest)
         userPhraseService.fillTranslations(userPhrases, user.language)
-        return userPhrases
+        return userPhrases.shuffled()
     }
 }
