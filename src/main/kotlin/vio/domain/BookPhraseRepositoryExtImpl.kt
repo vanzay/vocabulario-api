@@ -18,10 +18,10 @@ class BookPhraseRepositoryExtImpl(
         language: Language,
         book: Book,
         inDictionary: Boolean,
-        page: Int,
+        offset: Int,
         size: Int
     ): Collection<PhraseData> {
-        val idList = getTopPhraseIdList(book, user, inDictionary, page, size)
+        val idList = getTopPhraseIdList(book, user, inDictionary, offset, size)
         val idMap = idList.withIndex().associate { it.value to it.index }
 
         val basePhrases = getPhrasesData(book, idList, true, user, language)
@@ -37,7 +37,7 @@ class BookPhraseRepositoryExtImpl(
         return result.values
     }
 
-    private fun getTopPhraseIdList(book: Book, user: User?, inDictionary: Boolean, page: Int, size: Int): List<Int> {
+    private fun getTopPhraseIdList(book: Book, user: User?, inDictionary: Boolean, offset: Int, size: Int): List<Int> {
         val topPhrases = em.createNativeQuery(
             """
             SELECT distinct(coalesce(p.base_phrase_id, p.phrase_id)) AS phrase_id, bp.group_frequency
@@ -46,7 +46,7 @@ class BookPhraseRepositoryExtImpl(
             ${if (user == null) "" else "LEFT JOIN user_phrase up ON up.phrase_id = p.phrase_id AND up.user_id = ${user.id}"}
             WHERE bp.book_id = ${book.id} ${if (user == null) "" else "AND up.on_studying IS ${if (inDictionary) "NOT NULL" else "NULL"}"}
             ORDER BY bp.group_frequency DESC
-            OFFSET ${page * size}
+            OFFSET $offset
             LIMIT $size
             """,
             Tuple::class.java

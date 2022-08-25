@@ -44,13 +44,13 @@ class BookController(
         bookId: Int,
         inDictionary: Boolean,
         langIso2: String?,
-        page: Int,
+        offset: Int,
         request: HttpServletRequest
     ): Collection<PhraseData> {
         val user = getUser(request)
         val book = getBook(bookId, user)
         val language = user?.language ?: languageService.getOrDefault(langIso2)
-        return bookPhraseRepository.getPhrases(user, language, book, inDictionary, page, pageSize)
+        return bookPhraseRepository.getPhrases(user, language, book, inDictionary, offset, pageSize)
     }
 
     private fun getUser(request: HttpServletRequest): User? {
