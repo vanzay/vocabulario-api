@@ -1,3 +1,3 @@
 package vio.errors
 
-class ApiException(val code: String) : Exception()
+class ApiException(val code: String) : Exception(code)

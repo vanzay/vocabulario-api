@@ -10,5 +10,6 @@ data class BookPhraseEntry(
     val term: String?,
     val groupNumber: Int?,
     val onStudying: Boolean?,
+    val userTranslation: String?,
     val translation: String?
 )

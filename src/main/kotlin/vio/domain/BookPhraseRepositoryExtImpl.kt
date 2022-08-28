@@ -73,6 +73,7 @@ class BookPhraseRepositoryExtImpl(
                 p.term AS term,
                 p.group_number AS groupNumber,
                 ${if (user == null) "NULL" else "up.on_studying"} AS onStudying,
+                ${if (user == null) "NULL" else "up.translation"} AS userTranslation,
                 t.term AS translation
             FROM phrase p
             JOIN book_phrase bp ON bp.phrase_id = p.phrase_id AND bp.book_id = ${book.id}

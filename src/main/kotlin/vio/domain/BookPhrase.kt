@@ -21,6 +21,7 @@ import javax.persistence.*
                 ColumnResult(name = "term"),
                 ColumnResult(name = "groupNumber", type = Int::class),
                 ColumnResult(name = "onStudying", type = Boolean::class),
+                ColumnResult(name = "userTranslation"),
                 ColumnResult(name = "translation")
             )
         )
