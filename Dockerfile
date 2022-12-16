@@ -31,11 +31,12 @@ FROM openjdk:17-jdk-alpine as runner
 
 WORKDIR /app
 
-RUN addgroup -g 10001 -S java \
-    && adduser -S spring -u 10001
-
 ADD indecies/*.tar.gz /var/lucene_indices/
-RUN chown spring:java /var/lucene_indices -R
+
+RUN addgroup -g 10001 -S java \
+    && adduser -S spring -u 10001 \
+    && chown spring:java /var/lucene_indices -R
+
 COPY --chown=spring:java application.properties logback.xml ./
 COPY --from=build --chown=spring:java /app/build/libs/vocabulario*.jar ./vocabulario.jar
 
