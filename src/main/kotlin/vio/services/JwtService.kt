@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import vio.domain.User
 import vio.errors.InvalidTokenException
+import java.time.Instant
 import java.util.*
 import javax.crypto.SecretKey
 
@@ -16,7 +17,7 @@ import javax.crypto.SecretKey
 class JwtService(
     private val secretKey: SecretKey,
     @Value("\${jwt.token.lifetime}")
-    private val tokenLifetime: Int
+    private val tokenLifetime: Long
 ) {
 
     fun issueToken(user: User): String {
@@ -37,9 +38,8 @@ class JwtService(
     }
 
     private fun getExpirationTime(): Date {
-        val cal = Calendar.getInstance()
-        cal.add(Calendar.SECOND, tokenLifetime)
-        return cal.time
+        val date = Instant.now().plusSeconds(tokenLifetime)
+        return Date.from(date)
     }
 
     private fun parseToken(token: String): Claims {

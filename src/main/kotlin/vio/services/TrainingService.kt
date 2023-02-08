@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional
 import vio.domain.Phrase
 import vio.domain.User
 import vio.domain.UserPhraseRepository
+import java.time.Duration
+import java.time.Instant
 import java.util.*
 import kotlin.math.ceil
 
@@ -73,8 +75,7 @@ class TrainingService(
     }
 
     private fun getRefreshLimitDate(): Date {
-        val date = Calendar.getInstance()
-        date.add(Calendar.DATE, -30)
-        return date.time
+        val date = Instant.now().minus(Duration.ofDays(30))
+        return Date.from(date)
     }
 }

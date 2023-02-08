@@ -1,5 +1,6 @@
 package vio.utils
 
+import java.time.ZoneId
 import java.util.*
 
 object DbUtils {
@@ -13,8 +14,9 @@ object DbUtils {
     }
 
     fun getPartitionKey(date: Date): Int {
-        val cal = Calendar.getInstance()
-        cal.time = date
-        return cal[Calendar.YEAR] * 100 + cal[Calendar.MONTH]
+        val localDate = date.toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate()
+        return localDate.year * 100 + localDate.monthValue
     }
 }

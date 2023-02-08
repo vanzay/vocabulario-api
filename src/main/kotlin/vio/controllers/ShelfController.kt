@@ -19,6 +19,8 @@ import vio.services.ProcessorFactory
 import vio.services.UserBookService
 import vio.utils.DigestUtils
 import vio.utils.FileFormat
+import java.time.Duration
+import java.time.Instant
 import java.util.*
 import javax.servlet.http.HttpServletRequest
 
@@ -100,9 +102,8 @@ class ShelfController(
     }
 
     private fun getUploadingCount(user: User): Long {
-        val date = Calendar.getInstance()
-        date.add(Calendar.DATE, -1)
-        return userBookRepository.countByUserAndAddedDateAfter(user, date.time)
+        val date = Instant.now().minus(Duration.ofHours(24))
+        return userBookRepository.countByUserAndAddedDateAfter(user, Date.from(date))
     }
 
     private fun getUserBooks(user: User, page: Int): List<UserBook> {
