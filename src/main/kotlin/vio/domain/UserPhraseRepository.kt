@@ -157,23 +157,21 @@ interface UserPhraseRepository : JpaRepository<UserPhrase, Int> {
     @Query(
         """
         UPDATE UserPhrase
-        SET memoryPoints = :completeProgressPoints - :maxAnswerPoints,
-            onStudying = true
-        WHERE memoryPoints >= :completeProgressPoints AND lastActivity < :limitDate
+        SET memoryPoints = memoryPoints - :maxAnswerPoints
+        WHERE onStudying = true AND memoryPoints > :maxAnswerPoints AND lastActivity < :limitDate
         """
     )
-    fun refreshMemoryPoints(completeProgressPoints: Int, maxAnswerPoints: Int, limitDate: Date)
+    fun refreshMemoryPoints(maxAnswerPoints: Int, limitDate: Date)
 
     @Modifying
     @Query(
         """
         UPDATE UserPhrase
-        SET auditionPoints = :completeProgressPoints - :maxAnswerPoints,
-            onStudying = true
-        WHERE auditionPoints >= :completeProgressPoints AND lastActivity < :limitDate
+        SET auditionPoints = auditionPoints - :maxAnswerPoints
+        WHERE onStudying = true AND auditionPoints > :maxAnswerPoints AND lastActivity < :limitDate
         """
     )
-    fun refreshAuditionPoints(completeProgressPoints: Int, maxAnswerPoints: Int, limitDate: Date)
+    fun refreshAuditionPoints(maxAnswerPoints: Int, limitDate: Date)
 
     @Modifying
     @Query("UPDATE UserPhrase SET onStudying = :onStudying WHERE user = :user AND id IN (:idList)")

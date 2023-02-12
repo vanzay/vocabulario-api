@@ -66,8 +66,8 @@ class TrainingService(
 
     fun refreshPoints() {
         val limitDate = getRefreshLimitDate()
-        userPhraseRepository.refreshMemoryPoints(completeProgressPoints, maxAnswerPoints, limitDate)
-        userPhraseRepository.refreshAuditionPoints(completeProgressPoints, maxAnswerPoints, limitDate)
+        userPhraseRepository.refreshMemoryPoints(maxAnswerPoints, limitDate)
+        userPhraseRepository.refreshAuditionPoints(maxAnswerPoints, limitDate)
     }
 
     private fun getFixedPoints(points: Int): Int {
