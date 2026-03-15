@@ -1,0 +1,18 @@
+services:
+  api:
+    image: "vocabulario/api:${VERSION}"
+    restart: unless-stopped
+    build:
+      context: "."
+      args:
+        VERSION: "${VERSION}"
+    container_name: "vocabulario-api"
+    volumes:
+      - "/var/log/vocabulario:/var/log/vio"
+    ports:
+      - "8080:8080"
+
+networks:
+  default:
+    driver: bridge
+    name: vocabulario-network
